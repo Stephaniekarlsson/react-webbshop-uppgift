@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italiana&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Raleway", sans-serif;
+  background-color: var(--white-color);
+}
+
+:root {
+  --header-font: "Italiana", sans-serif;
+
+  --purple-color: #cec1e0;
+  --white-color: #f4f4f4;
+  --dark-grey-color: #333333;
+}
+
+a {
+  text-decoration: none;
+  color: var(--dark-grey-color);
+}

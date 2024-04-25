@@ -1,0 +1,26 @@
+.category-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.category-img {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--purple-color);
+    border-radius: 100%;
+    padding: 4px;
+}
+
+.category-text {
+    color: var(--purple-color);
+    font-size: 12px;
+}
