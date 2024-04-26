@@ -4,12 +4,12 @@ import { db } from './fire.js'
 
 const collectionName = 'products'
 const collectionRef = collection(db, collectionName)
-
+let productsList = []
 
 async function getProducts() {
     try {
         const productsSnapshot = await getDocs(collectionRef);
-        const productsList = productsSnapshot.docs.map(doc => withKey(doc));
+        productsList = productsSnapshot.docs.map(doc => withKey(doc));
         return productsList;
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -20,10 +20,9 @@ async function getProducts() {
 
 
 function withKey(doc) {
-    console.log("Document object:", doc); // Logga doc-objektet för att se dess struktur
     let o = doc.data();
     o.key = doc.id;
     return o;
 }
 
-export { getProducts }
+export { getProducts, productsList }
