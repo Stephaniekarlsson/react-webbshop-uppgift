@@ -1,32 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/cartProductCard.css";
-import { CiSquareMinus } from "react-icons/ci";
-import { CiSquarePlus } from "react-icons/ci";
-import { useCartStore, useQuantityStore } from "../data/store";
+import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
+import { useQuantityStore } from "../data/store";
 
 function CartProductCard({ product }) {
-  const getQuantity = useQuantityStore((state) => state.getQuantity);
-  const setQuantity = useQuantityStore((state) => state.setQuantity);
-  const quantity = getQuantity(product.id);
-  const addToCart = useCartStore((state) => state.addToCart);
-  const removeFromCart = useCartStore((state) => state.removeFromCart);
-  const cartItems = useCartStore((state) => state.cartItems);
+  const [quantity, setQuantity] = useState(useQuantityStore((state) => state.getQuantity(product.key)));
 
-
-  const increaseQuantity = () => {
+  const handleIncrement = () => {
     const newQuantity = quantity + 1;
-    setQuantity(product.id, newQuantity);
-    addToCart(product);
-  };
-
-  const decreaseQuantity = () => {
-    if (quantity > 0) {
-      const newQuantity = quantity - 1;
-      setQuantity(product.id, newQuantity);
-      if (newQuantity === 0) {
-        removeFromCart(product.id);
-      }
-    }
+    setQuantity(newQuantity); 
+    useQuantityStore((state) => state.setQuantity(product.key, newQuantity)); 
   };
 
   return (
@@ -40,9 +23,9 @@ function CartProductCard({ product }) {
         <p className="cart-product-name">{product.name}</p>
         <p className="cart-product-price">{product.price}kr</p>
         <div className="quantity">
-          <CiSquareMinus className="quantity-btn" onClick={decreaseQuantity} />
+          <CiSquareMinus className="quantity-btn"/>
           <p>{quantity}</p>
-          <CiSquarePlus className="quantity-btn" onClick={increaseQuantity} />
+          <CiSquarePlus className="quantity-btn" onClick={handleIncrement}/>
         </div>
       </div>
     </div>
