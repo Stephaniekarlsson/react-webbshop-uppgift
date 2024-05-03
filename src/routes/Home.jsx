@@ -8,12 +8,10 @@ import { useState } from 'react'
 import '../styles/home.css'
 
 function Home() {
-
   const [selectedCategory, setSelectedCategory] = useState('all');
-
+  
   const handleCategoryClick = (category) => {
       setSelectedCategory(category);
-  
   };
 
   return (

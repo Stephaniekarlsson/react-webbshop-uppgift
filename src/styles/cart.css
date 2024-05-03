@@ -1,0 +1,60 @@
+.cart-container {
+  background-image: url(../assets/cart-bg.png);
+  width: 100%;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+}
+
+.cart-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2em 1em;
+}
+
+.cart-header-container, .close-icon, .cart-products, .cart-header-container h1, .cart-price, .price-info, .shipping-info, .total-info, .price-info p, .shipping-info p, .total-info p {
+  background-color: transparent;
+  color: var(--dark-grey-color);
+}
+
+.close-icon {
+  font-size: 1.5em;
+  justify-self: end;
+}
+
+.cart-header-container h1 {
+  font-family: var(--header-font);
+  font-size: 24px;
+}
+
+.space {
+  width: 24px;
+}
+
+.cart-price {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5em;
+  flex-grow: 0;
+}
+
+.price-info, .shipping-info, .total-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-price button {
+  display: inline-block;
+  align-self: center;
+  padding: .5em 1em;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.253);
+}
+
+.cart-price button:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.253) inset;
+
+}

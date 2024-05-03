@@ -1,33 +1,29 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
+import Cart from "../components/Cart";
 
 const Root = () => {
-  // const [location, setLocation] = useState(window.location.hash);
-  // const [hideHeader, setHideHeader] = useState(false);
 
-  // useEffect(() => {
-  //   const handleHashChange = () => {
-  //     setLocation(window.location.hash);
-  //   };
+  const [showCartOverlay, setShowCartOverlay] = useState(false);
 
-  //   window.addEventListener("hashchange", handleHashChange);
+  const showCart = () => {
+    setShowCartOverlay(true);
+  };
 
-  //   return () => {
-  //     window.removeEventListener("hashchange", handleHashChange);
-  //   };
-  // }, []);
-
-
+  const closeCart = () => {
+    setShowCartOverlay(false);
+  };
 
   return (
     <div className="app">
-       <Header />
+      <Header showCart={showCart} />
+      {showCartOverlay && <Cart closeCart={closeCart} />}
       <main>
         <Outlet />
       </main>
     </div>
   );
-}
+};
 
 export default Root;

@@ -1,19 +1,50 @@
 import { create } from 'zustand'
 
-// set, create
-
 const useStore = create(set => ({
 	productList: [],
 
 	setProducts: newProducts => set(state => ({
 		productList: newProducts
 	})),
-	// increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
 
-	// addEmployee: employee => set(state => ({
-	// 	employees: [ ...state.employees, employee ]
-	// }))
 }))
 
 
 export { useStore }
+
+const useCartStore = create((set) => ({
+	cartItems: [],
+	addToCart: (product) =>
+	  set((state) => ({ cartItems: [...state.cartItems, product] })),
+	removeFromCart: (productId) =>
+	  set((state) => ({
+		cartItems: state.cartItems.filter((item) => item.id !== productId),
+	  })),
+  }));
+
+  useCartStore.subscribe(
+	(state) => {
+	  localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+	},
+	(state) => state.cartItems
+  );
+
+  const storedCartItems = JSON.parse(localStorage.getItem('cartItems'));
+	if (storedCartItems) {
+  		useCartStore.setState({ cartItems: storedCartItems });
+}
+  
+export { useCartStore }
+
+const useQuantityStore = create(() => {
+    const quantities = {};
+  
+    return {
+        getQuantity: (productKey) => quantities[productKey] || 0,
+        setQuantity: (productKey, quantity) => {
+            quantities[productKey] = quantity;
+        },
+    };
+});
+
+export { useQuantityStore }

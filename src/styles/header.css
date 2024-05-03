@@ -1,8 +1,14 @@
+.header-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 3em;
+    margin: 3em 3em 0.5em 3em;
 }
 
 .header-icons {
@@ -17,4 +23,19 @@
 .header-text {
     font-family: var(--header-font);
     font-size: 1.5em;
+}
+
+
+
+.search-input {
+    position: absolute;
+    bottom: 0%;
+    width: 15em;
+    margin-left: 3em;
+    margin-bottom: .5em;
+    appearance: none;
+    border-radius: 5px;
+    border: 1px solid var(--dark-grey-color);
+    padding: .5em;
+    appearance: none;
 }

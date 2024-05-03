@@ -24,3 +24,8 @@
     margin-top: .5em;
     width: 200px;
 }
+
+.price-cart-container button {
+    border: none;
+    font-size: 16px;
+}
