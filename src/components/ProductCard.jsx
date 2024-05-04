@@ -7,7 +7,7 @@ import { MdEditNote } from "react-icons/md";
 import { IoTrashOutline } from "react-icons/io5";
 import { removeProduct } from "../data/crud.js";
 
-function ProductCard({ product, onRemove}) {
+function ProductCard({ product, onRemove, onEdit}) {
   const addToCart = useStore((state) => state.addToCart);
   const [addedToCart, setAddedToCart] = useState(false);
   const removeCartItem = useStore((state) => state.removeCartItem);
@@ -23,6 +23,11 @@ function ProductCard({ product, onRemove}) {
   const handleRemoveProduct = async () => {
     onRemove()
   };
+
+  const handleEditProduct = () => {
+    onEdit(product); // Skicka produktinformationen till förälderkomponenten för redigering
+  };
+
   return (
     <div className="product-card">
       <img className="product-img" src={product.image} alt={product.name} />
@@ -36,7 +41,7 @@ function ProductCard({ product, onRemove}) {
         </div>
         <div className="edit-remove">
           <button>
-            <MdEditNote />
+            <MdEditNote onClick={handleEditProduct}/>
           </button>
           <button>
             <IoTrashOutline onClick={handleRemoveProduct}/>

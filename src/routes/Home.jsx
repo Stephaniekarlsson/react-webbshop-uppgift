@@ -11,6 +11,7 @@ import NewProductForm from '../components/NewProductForm';
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showProductForm, setShowProductForm] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
   
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -20,10 +21,15 @@ function Home() {
     setShowProductForm(true);
   };
 
+  const handleEditProduct = (product) => {
+    setProductToEdit(product); // Sätt den valda produkten för redigering
+    setShowProductForm(true); // Visa formuläret för att redigera produkten
+  };
+
   return (
     <div>
       {showProductForm ? (
-        <NewProductForm setShowProductForm={setShowProductForm}/>
+        <NewProductForm setShowProductForm={setShowProductForm} productToEdit={productToEdit}/>
       ) : (
         <div>
           <section className='category-container'>
@@ -50,7 +56,7 @@ function Home() {
               <button className="add-product-btn" onClick={addProduct}>Lägg till en produkt</button>
             </div>
             <div className="product-container">
-              <Products selectedCategory={selectedCategory} />
+              <Products selectedCategory={selectedCategory} onEdit={handleEditProduct}/>
             </div>
           </section>
         </div>

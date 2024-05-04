@@ -1,4 +1,4 @@
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore/lite'
+import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore/lite'
 import { db } from './fire.js'
 
 
@@ -43,6 +43,18 @@ async function removeProduct(productKey, setProducts) {
     }
 }
 
+async function updateProduct(productKey, updatedData) {
+    try {
+      const productDocRef = doc(db, collectionName, productKey);
+      await updateDoc(productDocRef, updatedData);
+      // Uppdatera det lokala tillståndet eller hämta produkterna på nytt om det behövs
+    } catch (error) {
+      console.error("Error updating product:", error);
+      throw error;
+    }
+  }
+  
+
 
 
 function withKey(doc) {
@@ -51,4 +63,4 @@ function withKey(doc) {
     return o;
 }
 
-export { getProducts, productsList, addProduct, removeProduct }
+export { getProducts, productsList, addProduct, removeProduct, updateProduct }

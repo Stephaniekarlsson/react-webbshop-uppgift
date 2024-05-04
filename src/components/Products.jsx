@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import { sortNameAsc, sortNameDesc, sortPriceAsc, sortPriceDesc } from "../data/sort.js";
 import { removeProduct } from "../data/crud.js";
 
-const Products = ({ selectedCategory }) => {
+const Products = ({ selectedCategory, onEdit }) => {
   const { productList, setProducts } = useStore((state) => ({
     productList: state.productList,
     setProducts: state.setProducts,
@@ -73,7 +73,7 @@ const Products = ({ selectedCategory }) => {
       <div className="product-container">
         {filteredProducts.map((product, index) => (
           <div key={product.key}>
-            <ProductCard product={product} onRemove={() => handleRemoveProduct(product.key)} />
+            <ProductCard product={product} onRemove={() => handleRemoveProduct(product.key)} onEdit={onEdit}/>
             {index !== productList.length - 1 && (
               <Divider variant="fullWidth" flexItem sx={{marginTop:'2em',}}/>
             )}
