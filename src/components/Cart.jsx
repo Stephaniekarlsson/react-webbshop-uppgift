@@ -22,7 +22,7 @@ function Cart({ closeCart }) {
     return acc + item.product.price * item.quantity;
   }, 0);
 
-  const shippingCost = totalPrice < 600 ? 89 : 0;
+  const shippingCost = totalPrice < 500 ? 89 : 0;
 
   const totalCost = totalPrice + shippingCost;
   
