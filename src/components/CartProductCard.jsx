@@ -25,22 +25,6 @@ function CartProductCard({ product }) {
       removeCartItem(product.key);
     }
   };
-  // const [quantity, setQuantity] = useState(useQuantityStore((state) => state.getQuantity(product.key)));
-  // const removeFromCart = useCartStore(state => state.removeFromCart);
-
-  // const handleIncrement = () => {
-  //   const newQuantity = quantity + 1;
-  //   setQuantity(newQuantity);
-  // };
-
-  // const handleDecrement = () => {
-  //   if (quantity > 1) {
-  //     const newQuantity = quantity - 1;
-  //     setQuantity(newQuantity);
-  //   } else {
-  //     removeFromCart(product);
-  //   }
-  // };
 
   return (
     <div className="cart-product-container">

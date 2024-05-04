@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore/lite'
+import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore/lite'
 import { db } from './fire.js'
 
 
@@ -17,6 +17,33 @@ async function getProducts() {
     }
 }
 
+async function addProduct(productData) {
+    try {
+        await addDoc(collectionRef, {
+            image: productData.image,
+            name: productData.name,
+            price: productData.price,
+            description: productData.description,
+            category: productData.category,
+        });
+    } catch (error) {
+        console.error("Error adding product to Firestore:", error);
+        throw error;
+    }
+}
+
+async function removeProduct(productKey, setProducts) {
+    try {
+        await deleteDoc(doc(db, collectionName, productKey));
+        // Uppdatera produkterna efter borttagning
+        const updatedProducts = await getProducts();
+        setProducts(updatedProducts);
+    } catch (error) {
+        console.error("Error removing product from Firestore:", error);
+        throw error;
+    }
+}
+
 
 
 function withKey(doc) {
@@ -25,4 +52,4 @@ function withKey(doc) {
     return o;
 }
 
-export { getProducts, productsList }
+export { getProducts, productsList, addProduct, removeProduct }
