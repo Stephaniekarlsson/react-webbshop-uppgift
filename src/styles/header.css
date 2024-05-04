@@ -39,3 +39,22 @@
     padding: .5em;
     appearance: none;
 }
+
+.cart-icon-header {
+   position: relative;
+}
+
+.cart-circle {
+    color: var(--dark-grey-color);
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    background-color: var(--purple-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.2em;
+}

@@ -1,28 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/cartProductCard.css";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
-import { useQuantityStore, useCartStore } from "../data/store";
+import { useStore } from "../data/store.js";
 
 function CartProductCard({ product }) {
-  const [quantity, setQuantity] = useState(useQuantityStore((state) => state.getQuantity(product.key)));
-  const removeFromCart = useCartStore(state => state.removeFromCart);
+  const cartItems = useStore((state) => state.cartItems);
+  const updateCartItemQuantity = useStore(
+    (state) => state.updateCartItemQuantity
+  );
+  const removeCartItem = useStore((state) => state.removeCartItem);
+
+  const cartItem = cartItems.find((item) => item.key === product.key);
+  const quantity = cartItem ? cartItem.quantity : 0;
 
 
   const handleIncrement = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity); 
-    useQuantityStore((state) => state.setQuantity(product.key, newQuantity)); 
+    updateCartItemQuantity(product.key, quantity + 1);
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity); // Uppdaterar den lokala kvantiteten
-      useQuantityStore((state) => state.setQuantity(product.key, newQuantity)); // Uppdaterar kvantiteten i store
+      updateCartItemQuantity(product.key, quantity - 1);
     } else {
-      removeFromCart(product)
+      removeCartItem(product.key);
     }
   };
+  // const [quantity, setQuantity] = useState(useQuantityStore((state) => state.getQuantity(product.key)));
+  // const removeFromCart = useCartStore(state => state.removeFromCart);
+
+  // const handleIncrement = () => {
+  //   const newQuantity = quantity + 1;
+  //   setQuantity(newQuantity);
+  // };
+
+  // const handleDecrement = () => {
+  //   if (quantity > 1) {
+  //     const newQuantity = quantity - 1;
+  //     setQuantity(newQuantity);
+  //   } else {
+  //     removeFromCart(product);
+  //   }
+  // };
 
   return (
     <div className="cart-product-container">
@@ -35,9 +53,9 @@ function CartProductCard({ product }) {
         <p className="cart-product-name">{product.name}</p>
         <p className="cart-product-price">{product.price}kr</p>
         <div className="quantity">
-          <CiSquareMinus className="quantity-btn"onClick={handleDecrement}/>
+          <CiSquareMinus className="quantity-btn" onClick={handleDecrement} />
           <p>{quantity}</p>
-          <CiSquarePlus className="quantity-btn" onClick={handleIncrement}/>
+          <CiSquarePlus className="quantity-btn" onClick={handleIncrement} />
         </div>
       </div>
     </div>

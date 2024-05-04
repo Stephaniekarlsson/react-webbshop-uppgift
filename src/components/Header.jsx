@@ -34,8 +34,9 @@ function Header({showCart}) {
         <NavLink to="/">
           <h1 className="header-text">SUNBUDDY</h1>
         </NavLink>
-        <div onClick={showCart}> 
+        <div className="cart-icon-header" onClick={showCart}> 
           <RiShoppingCartLine className="header-icons" />
+          <div className="cart-circle">0</div>
         </div>
       </div>
       <Searchbar />
