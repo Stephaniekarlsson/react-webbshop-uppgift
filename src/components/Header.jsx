@@ -1,42 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/header.css";
-// import { IoSearchOutline } from "react-icons/io5";
 import { RiShoppingCartLine, RiAdminLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import Searchbar from "./Searchbar";
+import { useStore } from "../data/store.js";
 
-function Header({showCart}) {
-  const [showSearchInput, setShowSearchInput] = useState(false);
-  const searchInputRef = useRef(null);
+function Header({ showCart }) {
+  const cartItems = useStore((state) => state.cartItems);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchInputRef.current &&
-        !searchInputRef.current.contains(event.target)
-      ) {
-        setShowSearchInput(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-
+  const totalCartItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
   return (
     <div className="header-container">
       <div className="header">
-        <RiAdminLine className="header-icons"/>
+        <RiAdminLine className="header-icons" />
         <NavLink to="/">
           <h1 className="header-text">SUNBUDDY</h1>
         </NavLink>
-        <div className="cart-icon-header" onClick={showCart}> 
+        <div className="cart-icon-header" onClick={showCart}>
           <RiShoppingCartLine className="header-icons" />
-          <div className="cart-circle">0</div>
+          {cartItems.length > 0 && <div className="cart-circle">{totalCartItems}</div>}
         </div>
       </div>
       <Searchbar />
