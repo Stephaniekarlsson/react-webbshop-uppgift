@@ -1,77 +1,50 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
-const useStore = create((set) => ({
-  productList: [],
-  cartItems: [],
+const useStore = create((set) => {
+  const storedCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-  setProducts: newProducts => set(state => ({
-		productList: newProducts
-	})),
+  return {
+    productList: [],
+    cartItems: storedCartItems,
 
-  addToCart: (product) =>
-    set((state) => {
-      const existingProductIndex = state.cartItems.findIndex(
-        (item) => item.key === product.key
-      );
-  
-      if (existingProductIndex !== -1) {
-        const updatedCartItems = [...state.cartItems];
-        updatedCartItems[existingProductIndex].quantity += product.quantity;
+    setProducts: newProducts => set(state => ({
+      productList: newProducts
+    })),
+
+    addToCart: (product) =>
+      set((state) => {
+        const existingProductIndex = state.cartItems.findIndex(
+          (item) => item.key === product.key
+        );
+
+        if (existingProductIndex !== -1) {
+          const updatedCartItems = [...state.cartItems];
+          updatedCartItems[existingProductIndex].quantity += product.quantity;
+          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+          return { cartItems: updatedCartItems };
+        } else {
+          const updatedCartItems = [...state.cartItems, product];
+          localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+          return { cartItems: updatedCartItems };
+        }
+      }),
+
+    updateCartItemQuantity: (productKey, quantity) =>
+      set((state) => {
+        const updatedCartItems = state.cartItems.map((item) =>
+          item.key === productKey ? { ...item, quantity } : item
+        );
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
         return { cartItems: updatedCartItems };
-      } else {
-        return { cartItems: [...state.cartItems, product] };
-      }
-    }),
+      }),
 
-  updateCartItemQuantity: (productKey, quantity) =>
-    set((state) => ({
-      cartItems: state.cartItems.map((item) =>
-        item.key === productKey ? { ...item, quantity } : item
-      ),
-    })),
-
-  removeCartItem: (productKey) =>
-    set((state) => ({
-      cartItems: state.cartItems.filter((item) => item.key !== productKey),
-    })),
-}));
+    removeCartItem: (productKey) =>
+      set((state) => {
+        const updatedCartItems = state.cartItems.filter((item) => item.key !== productKey);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        return { cartItems: updatedCartItems };
+      }),
+  };
+});
 
 export { useStore };
-
-
-
-// const useCartStore = create((set) => ({
-//   cartItems: [],
-//   addToCart: (product) =>
-//     set((state) => ({ cartItems: [...state.cartItems, product] })),
-//   removeFromCart: (product) =>
-//     set((state) => ({
-//       cartItems: state.cartItems.filter((item) => item.key !== product.key),
-//     })),
-// }));
-
-// useCartStore.subscribe(
-//   (state) => {
-//     localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
-//   },
-//   (state) => state.cartItems
-// );
-
-// const storedCartItems = JSON.parse(localStorage.getItem('cartItems'));
-// if (storedCartItems) {
-//   useCartStore.setState({ cartItems: storedCartItems });
-// }
-
-// const useQuantityStore = create((set, get) => {
-//   const quantities = {};
-
-//   return {
-//     getQuantity: (productKey) => quantities[productKey] || 0,
-//     setQuantity: (productKey, quantity) => {
-//       quantities[productKey] = quantity;
-//     },
-//   };
-// });
-
-// export { useCartStore, useQuantityStore };
-
