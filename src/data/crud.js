@@ -35,7 +35,6 @@ async function addProduct(productData) {
 async function removeProduct(productKey, setProducts) {
     try {
         await deleteDoc(doc(db, collectionName, productKey));
-        // Uppdatera produkterna efter borttagning
         const updatedProducts = await getProducts();
         setProducts(updatedProducts);
     } catch (error) {

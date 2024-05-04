@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/newProductForm.css";
 import { addProduct } from "../data/crud";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function NewProductForm({ setShowProductForm }) {
   const [productData, setProductData] = useState({
@@ -13,21 +13,23 @@ function NewProductForm({ setShowProductForm }) {
   });
 
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(""); // Länken till den uppladdade bilden
+  const [imageUrl, setImageUrl] = useState(""); 
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
-      console.log("Selected image:", e.target.files[0]); // Lägg till denna rad för att kontrollera den valda bilden
     }
   };
   
   const handleImageUpload = () => {
     if (image) {
-      console.log("Uploading image:", image); // Lägg till denna rad för att kontrollera bilden som ska laddas upp
       const storageRef = ref(getStorage(), `img/${image.name}`);
-      uploadBytes(storageRef, image).then((snapshot) => {
-        console.log("Uploaded a blob or file!", snapshot);
+      uploadBytes(storageRef, image).then(() => {
+        getDownloadURL(ref(storageRef)).then((url) => {
+          setImageUrl(url);
+        });
+      }).catch((error) => {
+        console.error("Error uploading image:", error);
       });
     } else {
       console.error("No image selected");
@@ -36,36 +38,24 @@ function NewProductForm({ setShowProductForm }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("Input field name:", name); // Logga namnet på fältet
-    console.log("Input field value:", value); // Logga värdet på fältet
     setProductData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  console.log("Product data:", productData);
-  console.log("Image URL:", imageUrl);
-  
-
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Förhindra att sidan uppdateras vid submit
-  
-    // Kontrollera om namnfältet är tomt eller undefined
-    if (!productData.name) {
-      console.error("Product name is empty or undefined");
-      return; // Avbryt funktionen om namnfältet är tomt eller undefined
-    }
-  
+    e.preventDefault();
+   
     try {
-      // Lägg till produkten i Firestore
-      await addProduct({ productData, image: imageUrl });
-      setShowProductForm(false); // Dölj formuläret efter att produkten har lagts till
+      await addProduct({ ...productData, image: imageUrl });
+      setShowProductForm(false); 
     } catch (error) {
       console.error("Error adding product:", error);
       // Hantera fel här, till exempel visa ett felmeddelande för användaren
     }
   };
+  
   
 
   return (
@@ -78,9 +68,9 @@ function NewProductForm({ setShowProductForm }) {
             type="file"
             placeholder="Bildlänk"
             name="image"
-            // onChange={handleImageChange}
+            onChange={handleImageChange}
           />
-          {/* <button type="button" onClick={handleImageUpload}>Ladda upp bild</button> */}
+          <button type="button" onClick={handleImageUpload}>Ladda upp bild</button>
         </div>
 
         <div>
@@ -133,12 +123,3 @@ function NewProductForm({ setShowProductForm }) {
 }
 
 export default NewProductForm;
-
-
-// service firebase.storage {
-//     match /b/{bucket}/o {
-//       match /{allPaths=**} {
-//         allow read, write: if false;
-//       }
-//     }
-//   }
