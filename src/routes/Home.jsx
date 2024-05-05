@@ -24,8 +24,8 @@ function Home() {
   };
 
   const handleEditProduct = (product) => {
-    setProductToEdit(product); // Sätt den valda produkten för redigering
-    setShowProductForm(true); // Visa formuläret för att redigera produkten
+    setProductToEdit(product);
+    setShowProductForm(true); 
   };
 
   return (

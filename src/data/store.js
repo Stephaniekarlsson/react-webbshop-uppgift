@@ -1,4 +1,3 @@
-// store.js
 import { create } from 'zustand';
 
 const useStore = create((set) => {
@@ -52,21 +51,17 @@ const useStore = create((set) => {
       }),
 
       login: (username, password) => {
-        // Lägg till loggmeddelande för att se inloggningsförsök
         console.log('Inloggning med användarnamn:', username);
         if (username === 'admin' && password === 'lösen') {
-          console.log('Inloggning lyckades');
           set({ isLoggedIn: true });
           localStorage.setItem('isLoggedIn', JSON.stringify(true));
         } else {
-          console.log('Inloggning misslyckades');
           set({ isLoggedIn: false }); 
           localStorage.removeItem('isLoggedIn');
         }
       },
 
     logout: () => {
-      console.log('Utloggning');
       set({ isLoggedIn: false });
       localStorage.removeItem('isLoggedIn');
       

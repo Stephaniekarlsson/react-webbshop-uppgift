@@ -4,9 +4,7 @@ import { useStore } from "../data/store";
 
 function SignInForm() {
   const [username, setUsername] = useState("");
-  const [usernameTouched, setUsernameTouched] = useState(false);
   const [password, setPassword] = useState("");
-  const [passwordTouched, setPasswordTouched] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const { login } = useStore();
 

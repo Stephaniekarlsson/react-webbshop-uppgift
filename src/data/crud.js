@@ -47,16 +47,12 @@ async function updateProduct(productKey, updatedData) {
     try {
       const productDocRef = doc(db, collectionName, productKey);
       await updateDoc(productDocRef, updatedData);
-      // Uppdatera det lokala tillståndet eller hämta produkterna på nytt om det behövs
     } catch (error) {
       console.error("Error updating product:", error);
       throw error;
     }
   }
   
-
-
-
 function withKey(doc) {
     let o = doc.data();
     o.key = doc.id;

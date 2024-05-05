@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useStore } from "../data/store";
 
 function NewProductForm({ productToEdit, setProductToEdit }) {
-  const { showProductForm, setShowProductForm } = useStore();
+  const { setShowProductForm } = useStore();
   const [productData, setProductData] = useState({
     image: productToEdit ? productToEdit.image : "",
     name: productToEdit ? productToEdit.name : "",
@@ -20,7 +20,7 @@ function NewProductForm({ productToEdit, setProductToEdit }) {
   );
   const [imageUploaded, setImageUploaded] = useState(false);
   const [error, setError] = useState("");
-  const [editMode, setEditMode] = useState(false); // New state
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     if (!productToEdit) {

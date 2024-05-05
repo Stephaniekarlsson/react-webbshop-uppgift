@@ -3,8 +3,6 @@ import "../styles/productCard.css";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { useStore } from "../data/store.js";
 import { RiCheckLine } from "react-icons/ri";
-import { MdEditNote } from "react-icons/md";
-import { IoTrashOutline } from "react-icons/io5";
 
 function ProductCard({ product, onRemove, onEdit}) {
   const addToCart = useStore((state) => state.addToCart);
@@ -43,11 +41,9 @@ function ProductCard({ product, onRemove, onEdit}) {
         <div className="edit-remove">
           <button onClick={handleEditProduct}>
             Edit
-            {/* <MdEditNote /> */}
           </button>
           <button onClick={handleRemoveProduct}>
             Remove
-            {/* <IoTrashOutline /> */}
           </button>
         </div>
         )}

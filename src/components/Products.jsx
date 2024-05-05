@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { getProducts } from "../data/crud.js";
 import { useStore } from "../data/store.js";
 import ProductCard from "./ProductCard.jsx";

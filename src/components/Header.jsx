@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import "../styles/header.css";
 import { RiShoppingCartLine, RiAdminLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
@@ -9,7 +9,7 @@ import { TbLogout2 } from "react-icons/tb";
 
 function Header({ showCart }) {
   const cartItems = useStore((state) => state.cartItems);
-  const { showProductForm, setShowProductForm } = useStore();
+  const { setShowProductForm } = useStore();
   const isLoggedIn = useStore((state) => state.isLoggedIn);
   const logout = useStore((state) => state.logout);
 

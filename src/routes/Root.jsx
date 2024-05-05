@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import Cart from "../components/Cart";
@@ -21,7 +21,7 @@ const Root = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/'); // Omdirigera till startsidan om användaren är inloggad
+      navigate('/'); 
     }
   }, [isLoggedIn, navigate]);
 

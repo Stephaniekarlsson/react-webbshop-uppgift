@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../styles/cartProductCard.css";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import { useStore } from "../data/store.js";
