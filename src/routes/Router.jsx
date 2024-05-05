@@ -3,6 +3,7 @@ import Root from './Root.jsx'
 import Home from './Home.jsx';
 import Product from './Product.jsx';
 // import Cart from './Cart.jsx';
+import SignIn from "../routes/SignIn.jsx"
 
 const router = createHashRouter([
 	{
@@ -18,6 +19,10 @@ const router = createHashRouter([
 			{
 				path: '/product',
 				element: <Product />
+			},
+			{
+				path: '/signIn',
+				element: <SignIn />
 			},
 		]
 	},

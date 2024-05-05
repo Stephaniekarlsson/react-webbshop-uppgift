@@ -45,6 +45,8 @@ const useStore = create((set) => {
         return { cartItems: updatedCartItems };
       }),
   };
+
+
 });
 
 export { useStore };

@@ -3,7 +3,7 @@ import "../styles/newProductForm.css";
 import { addProduct, updateProduct } from "../data/crud";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-function NewProductForm({ setShowProductForm, productToEdit }) {
+function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit }) {
   const [productData, setProductData] = useState({
     image: productToEdit ? productToEdit.image : "",
     name: productToEdit ? productToEdit.name : "",
@@ -13,7 +13,15 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
   });
 
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(
+    productToEdit ? productToEdit.image : ""
+  );
+
+  useEffect(() => {
+    if (!productToEdit) {
+      setImageUrl(""); // Återställ imageUrl till en tom sträng om productToEdit är falskt (null eller undefined)
+    }
+  }, [productToEdit]);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -49,8 +57,9 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (productToEdit && productToEdit.key) { // Kontroll för att säkerställa att productToEdit och dess key är definierade
-        await updateProduct(productToEdit.key, { // Använd productToEdit.key här istället för att det är vad du loggade och verifierade som korrekt
+      if (productToEdit && productToEdit.key) {
+        //
+        await updateProduct(productToEdit.key, {
           ...productData,
           image: imageUrl,
         });
@@ -58,13 +67,14 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
         await addProduct({ ...productData, image: imageUrl });
       }
       setShowProductForm(false);
+      setProductToEdit(null)
+
     } catch (error) {
       console.error("Error adding/updating product:", error);
     }
   };
 
   const handleCancel = () => {
-    // Återställ formuläret till ursprungstillståndet
     setProductData({
       image: productToEdit ? productToEdit.image : "",
       name: productToEdit ? productToEdit.name : "",
@@ -73,6 +83,8 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
       category: productToEdit ? productToEdit.category : "",
     });
     setShowProductForm(false);
+    setProductToEdit(null)
+    
   };
 
   return (
@@ -87,7 +99,11 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             name="image"
             onChange={handleImageChange}
           />
-          <button type="button" onClick={handleImageUpload}>
+          <button
+            className="img-upload-btn"
+            type="button"
+            onClick={handleImageUpload}
+          >
             Ladda upp bild
           </button>
         </div>
@@ -100,6 +116,7 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             placeholder="Ex. Pool - Blå"
             name="name"
             onChange={handleInputChange}
+            value={productData.name}
           />
         </div>
 
@@ -111,6 +128,7 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             placeholder="Ex. 299"
             name="price"
             onChange={handleInputChange}
+            value={productData.price}
           />
         </div>
 
@@ -122,6 +140,7 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             placeholder="Information om produkten"
             name="description"
             onChange={handleInputChange}
+            value={productData.description}
           />
         </div>
 
@@ -133,6 +152,7 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             placeholder="Ex. sommarlek"
             name="category"
             onChange={handleInputChange}
+            value={productData.category}
           />
         </div>
         {productToEdit ? (
@@ -143,7 +163,7 @@ function NewProductForm({ setShowProductForm, productToEdit }) {
             </button>
           </div>
         ) : (
-            <div>
+          <div>
             <button type="submit"> Lägg till</button>
             <button type="button" onClick={handleCancel}>
               Avbryt

@@ -15,7 +15,9 @@ function Header({ showCart }) {
   return (
     <div className="header-container">
       <div className="header">
+        <NavLink to="/signIn">
         <RiAdminLine className="header-icons" />
+        </NavLink>
         <NavLink to="/">
           <h1 className="header-text">SUNBUDDY</h1>
         </NavLink>

@@ -29,7 +29,7 @@ function Home() {
   return (
     <div>
       {showProductForm ? (
-        <NewProductForm setShowProductForm={setShowProductForm} productToEdit={productToEdit}/>
+        <NewProductForm setShowProductForm={setShowProductForm} productToEdit={productToEdit} setProductToEdit={setProductToEdit}/>
       ) : (
         <div>
           <section className='category-container'>
