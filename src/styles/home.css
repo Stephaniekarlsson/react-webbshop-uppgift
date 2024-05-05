@@ -1,7 +1,12 @@
+section {
+    background-color: var(--white-color);
+}
+
 .category-container {
     display: flex;
     justify-content: center;
     gap: 1em;
+    padding-top: .5em;
 }
 
 .category {
@@ -41,4 +46,23 @@
     font-weight: 500;
     font-size: 14px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.255);
+}
+
+@media (min-width: 800px) {
+    .category-container {
+        gap: 3em;
+    }
+
+    .category-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .category-text {
+        color: var(--purple-color);
+        font-size: 16px;
+    }
+    .add-product-btn {
+        font-size: 16px;
+    }
 }

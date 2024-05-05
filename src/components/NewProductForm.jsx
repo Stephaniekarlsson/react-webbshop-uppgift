@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import "../styles/newProductForm.css";
 import { addProduct, updateProduct } from "../data/crud";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useStore } from "../data/store";
 
-function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit }) {
+function NewProductForm({ productToEdit, setProductToEdit }) {
+  const { showProductForm, setShowProductForm } = useStore();
   const [productData, setProductData] = useState({
     image: productToEdit ? productToEdit.image : "",
     name: productToEdit ? productToEdit.name : "",
@@ -16,16 +18,30 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
   const [imageUrl, setImageUrl] = useState(
     productToEdit ? productToEdit.image : ""
   );
+  const [imageUploaded, setImageUploaded] = useState(false);
+  const [error, setError] = useState("");
+  const [editMode, setEditMode] = useState(false); // New state
 
   useEffect(() => {
     if (!productToEdit) {
-      setImageUrl(""); // Återställ imageUrl till en tom sträng om productToEdit är falskt (null eller undefined)
+      setImageUrl("");
+      setEditMode(false); 
+    } else {
+      setEditMode(true); 
     }
   }, [productToEdit]);
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      setShowProductForm(false); 
+    }
+  }, []);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
+      setImageUploaded(false); 
     }
   };
 
@@ -36,13 +52,14 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
         .then(() => {
           getDownloadURL(ref(storageRef)).then((url) => {
             setImageUrl(url);
+            setImageUploaded(true);
           });
         })
         .catch((error) => {
-          console.error("Error uploading image:", error);
+          setError("Error uploading image: " + error.message);
         });
     } else {
-      console.error("No image selected");
+      setError("Ingen bild vald");
     }
   };
 
@@ -56,9 +73,25 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!productData.name || !productData.price || !productData.category) {
+      setError("Vänligen fyll i alla obligatoriska fält.");
+      return;
+    }
+
+    const price = parseFloat(productData.price);
+    if (isNaN(price) || price <= 0) {
+      setError("Vänligen ange ett giltigt pris.");
+      return;
+    }
+
+    if (!editMode && !imageUploaded) {
+      setError("Vänligen ladda upp bilden");
+      return;
+    }
+
     try {
       if (productToEdit && productToEdit.key) {
-        //
         await updateProduct(productToEdit.key, {
           ...productData,
           image: imageUrl,
@@ -67,12 +100,12 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
         await addProduct({ ...productData, image: imageUrl });
       }
       setShowProductForm(false);
-      setProductToEdit(null)
-
+      setProductToEdit(null);
     } catch (error) {
-      console.error("Error adding/updating product:", error);
+      setError("Något gick fel vid uppladning av produkt, testa igen senare " + error.message);
     }
   };
+
 
   const handleCancel = () => {
     setProductData({
@@ -84,14 +117,17 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
     });
     setShowProductForm(false);
     setProductToEdit(null)
+    setError("");
     
   };
 
+  
+
   return (
     <div>
-      <form className="product-form-container" onSubmit={handleSubmit}>
+      <form noValidate className="product-form-container" onSubmit={handleSubmit}>
         <div>
-          <label>Produktens bild</label>
+          <label>Produktens bild*</label>
           <input
             className="product-form-input img-input"
             type="file"
@@ -109,7 +145,7 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
         </div>
 
         <div>
-          <label>Produktens namn</label>
+          <label>Produktens namn*</label>
           <input
             className="product-form-input name-input"
             type="text"
@@ -117,11 +153,12 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
             name="name"
             onChange={handleInputChange}
             value={productData.name}
+            required
           />
         </div>
 
         <div>
-          <label>Produktens pris</label>
+          <label>Produktens pris*</label>
           <input
             className="product-form-input price-input"
             type="text"
@@ -129,6 +166,7 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
             name="price"
             onChange={handleInputChange}
             value={productData.price}
+            required
           />
         </div>
 
@@ -145,16 +183,18 @@ function NewProductForm({ setShowProductForm, productToEdit, setProductToEdit })
         </div>
 
         <div>
-          <label>Produktens kategori</label>
+          <label>Produktens kategori*</label>
           <input
             className="product-form-input category-input"
             type="text"
-            placeholder="Ex. sommarlek"
+            placeholder="Ex. uvtält"
             name="category"
             onChange={handleInputChange}
             value={productData.category}
+            required
           />
         </div>
+        {error && <div className="error">{error}</div>}
         {productToEdit ? (
           <div>
             <button type="submit">Spara ändringar</button>

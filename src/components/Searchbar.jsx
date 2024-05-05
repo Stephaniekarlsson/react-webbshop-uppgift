@@ -20,22 +20,22 @@ function Searchbar() {
 
   const filteredList = filterList(searchInput);
 
-  return (
-    <>
-        <div className='input-wrapper'>
-            <IoSearchOutline className="search-icon" />
-            <input type="text" placeholder='Sök produkter...' value={searchInput} onChange={handleInputChange} />
-        </div>
-        {searchInput && filteredList.length > 0 && ( 
-            <div className='results-container'>
-                <div className='results-list'>
-                    {filteredList.map((product, key) => {
-                        return <SearchedProductCard key={key} product={product} />;
-                    })}
-                </div>
+return (
+  <>
+    <div className='input-wrapper'>
+        <IoSearchOutline className="search-icon" />
+        <input type="text" placeholder='Sök produkter...' value={searchInput} onChange={handleInputChange} />
+    </div>
+    {searchInput && filteredList.length > 0 && ( 
+        <div className='results-container'>
+            <div className='results-list'>
+                {filteredList.map((product, key) => {
+                    return <SearchedProductCard key={key} product={product} />;
+                })}
             </div>
-        )}
-    </>
+        </div>
+    )}
+  </>
 );
 }
 

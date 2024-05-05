@@ -5,12 +5,12 @@ import { useStore } from "../data/store.js";
 import { RiCheckLine } from "react-icons/ri";
 import { MdEditNote } from "react-icons/md";
 import { IoTrashOutline } from "react-icons/io5";
-import { removeProduct } from "../data/crud.js";
 
 function ProductCard({ product, onRemove, onEdit}) {
   const addToCart = useStore((state) => state.addToCart);
   const [addedToCart, setAddedToCart] = useState(false);
-  const removeCartItem = useStore((state) => state.removeCartItem);
+  const { isLoggedIn } = useStore();
+
 
   const handleAddToCart = () => {
     addToCart({ ...product, quantity: 1 });
@@ -25,7 +25,7 @@ function ProductCard({ product, onRemove, onEdit}) {
   };
 
   const handleEditProduct = () => {
-    onEdit(product); // Skicka produktinformationen till förälderkomponenten för redigering
+    onEdit(product); 
   };
 
   return (
@@ -39,14 +39,18 @@ function ProductCard({ product, onRemove, onEdit}) {
             {addedToCart ? <RiCheckLine /> : <RiShoppingCartLine />}
           </button>
         </div>
+        {isLoggedIn && (
         <div className="edit-remove">
-          <button>
-            <MdEditNote onClick={handleEditProduct}/>
+          <button onClick={handleEditProduct}>
+            Edit
+            {/* <MdEditNote /> */}
           </button>
-          <button>
-            <IoTrashOutline onClick={handleRemoveProduct}/>
+          <button onClick={handleRemoveProduct}>
+            Remove
+            {/* <IoTrashOutline /> */}
           </button>
         </div>
+        )}
       </div>
     </div>
   );

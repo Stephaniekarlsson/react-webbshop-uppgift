@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
     margin: 1em auto;
-    position: relative; /* Flytta detta hit */
+    position: relative;
 }
 
 .input-wrapper input {
@@ -46,4 +46,10 @@
     z-index: 1000; 
     background-color: var(--white-color); 
     width: 15em;
+}
+
+@media (min-width: 800px) {
+    .input-wrapper {
+        width: 20em;
+    }
 }

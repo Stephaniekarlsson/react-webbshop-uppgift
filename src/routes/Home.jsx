@@ -7,11 +7,13 @@ import Products from '../components/Products';
 import { useState } from 'react';
 import '../styles/home.css';
 import NewProductForm from '../components/NewProductForm';
+import { useStore } from '../data/store';
 
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [showProductForm, setShowProductForm] = useState(false);
+  const { showProductForm, setShowProductForm } = useStore();
   const [productToEdit, setProductToEdit] = useState(null);
+  const { isLoggedIn } = useStore()
   
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -27,9 +29,9 @@ function Home() {
   };
 
   return (
-    <div>
+    <section>
       {showProductForm ? (
-        <NewProductForm setShowProductForm={setShowProductForm} productToEdit={productToEdit} setProductToEdit={setProductToEdit}/>
+        <NewProductForm productToEdit={productToEdit} setProductToEdit={setProductToEdit}/>
       ) : (
         <div>
           <section className='category-container'>
@@ -52,16 +54,18 @@ function Home() {
           </section>
 
           <section>
+            {isLoggedIn && (
             <div className="add-product-container">
               <button className="add-product-btn" onClick={addProduct}>Lägg till en produkt</button>
             </div>
+            )}
             <div className="product-container">
               <Products selectedCategory={selectedCategory} onEdit={handleEditProduct}/>
             </div>
           </section>
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

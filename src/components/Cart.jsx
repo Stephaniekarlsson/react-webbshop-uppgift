@@ -27,36 +27,70 @@ function Cart({ closeCart }) {
   const totalCost = totalPrice + shippingCost;
   
   return (
-    <div className="cart-container">
-      <div className="cart-header-container">
-        <div className="space"></div>
-        <h1>VARUKORGEN</h1>
-        <SlClose className="close-icon" onClick={closeCart} />
-      </div>
-      {groupedCartItems.map((item) => (
-        <div key={item.product.key} className="cart-products">
-          <CartProductCard product={item.product} quantity={item.quantity} />
-          <Divider variant="fullWidth" flexItem sx={{ marginTop: "1em"}} />
+    <>
+      {cartItems.length > 0 ? (
+        <div className="cart-container">
+          <div>
+            <div className="cart-header-container">
+              <div className="space"></div>
+              <h1>VARUKORGEN</h1>
+              <SlClose className="close-icon" onClick={closeCart} />
+            </div>
+            {groupedCartItems.map((item) => (
+              <div key={item.product.key} className="cart-products">
+                <CartProductCard product={item.product} quantity={item.quantity} />
+                <Divider variant="fullWidth" flexItem sx={{ marginTop: "1em"}} />
+              </div>
+            ))}
+          </div>
+          <div className="cart-price">
+            <div className="price-info">
+              <p>Summa:</p>
+              <p>{totalPrice}kr</p>
+            </div>
+            <div className="shipping-info">
+              <p>Frakt:</p>
+              <p>{shippingCost}kr</p>
+            </div>
+            <Divider variant="fullWidth" flexItem sx={{ marginTop: "1em" }} />
+            <div className="total-info">
+              <p>Totalt:</p>
+              <p>{totalCost}kr</p>
+            </div>
+            <button>Till kassan</button>
+          </div>
         </div>
-      ))}
-      <div className="cart-price">
-        <div className="price-info">
-          <p>Summa:</p>
-          <p>{totalPrice}kr</p>
+      ) : (
+        <div className="cart-container">
+          <div>
+            <div className="cart-header-container">
+              <div className="space"></div>
+              <h1>VARUKORGEN</h1>
+              <SlClose className="close-icon" onClick={closeCart} />
+            </div>
+            <h3 className="cart-message">Varukorgen är tom</h3>
+          </div>
+          <div className="cart-price">
+            <div className="price-info">
+              <p>Summa:</p>
+              <p>0kr</p>
+            </div>
+            <div className="shipping-info">
+              <p>Frakt:</p>
+              <p>0kr</p>
+            </div>
+            <Divider variant="fullWidth" flexItem sx={{ marginTop: "1em" }} />
+            <div className="total-info">
+              <p>Totalt:</p>
+              <p>0kr</p>
+            </div>
+            <button disabled>Till kassan</button>
+          </div>
         </div>
-        <div className="shipping-info">
-          <p>Frakt:</p>
-          <p>{shippingCost}kr</p>
-        </div>
-        <Divider variant="fullWidth" flexItem sx={{ marginTop: "1em" }} />
-        <div className="total-info">
-          <p>Totalt:</p>
-          <p>{totalCost}kr</p>
-        </div>
-        <button>Till kassan</button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
+
 
 export default Cart;

@@ -16,6 +16,11 @@
     cursor: pointer;
     font-size: 15px;
     padding: .5em;
+    background-color: var(--white-color);
+}
+
+.sort-option {
+    background-color: var(--white-color);
 }
 
 .product-container {

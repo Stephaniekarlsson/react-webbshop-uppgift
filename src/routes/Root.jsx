@@ -2,10 +2,14 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import Cart from "../components/Cart";
+import { useStore } from "../data/store";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Root = () => {
-
+  const {isLoggedIn} = useStore();
   const [showCartOverlay, setShowCartOverlay] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const showCart = () => {
     setShowCartOverlay(true);
@@ -15,9 +19,17 @@ const Root = () => {
     setShowCartOverlay(false);
   };
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/'); // Omdirigera till startsidan om användaren är inloggad
+    }
+  }, [isLoggedIn, navigate]);
+
+  const onSignInPage = location.pathname === "/signIn"
+
   return (
     <div className="app">
-      <Header showCart={showCart} />
+      {!onSignInPage && <Header showCart={showCart} />}
       {showCartOverlay && <Cart closeCart={closeCart} />}
       <main>
         <Outlet />
